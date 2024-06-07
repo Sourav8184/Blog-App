@@ -1,6 +1,7 @@
 // Imports
 import express from "express";
 import connect_DB from "./db/connect_DB.js";
+import userRouter from "./routes/userRoute.js";
 
 const app = express();
 
@@ -19,3 +20,5 @@ connect_DB()
   .catch((err) => {
     console.log("MONGO db connection failed !!! ", err);
   });
+
+app.use("/api/user", userRouter);
