@@ -11,6 +11,7 @@ import Signup from "./pages/signup/Signup";
 
 // Import components:
 import Header from "./components/header/Header";
+import FooterCom from "./components/footer/Footer";
 
 // App Component:
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>
+      <FooterCom />
     </BrowserRouter>
   );
 }
