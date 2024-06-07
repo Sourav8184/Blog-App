@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema(
     profilePicture: {
       type: String,
       default:
-        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fpngtree.com%2Ffreepng%2Fman-avatar-image-for-profile_13001882.html&psig=AOvVaw26jRsqd2smIzRrl2cPIMF-&ust=1717840585036000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCLCdpoCdyYYDFQAAAAAdAAAAABAEhttps://www.google.com/url?sa=i&url=https%3A%2F%2Fpngtree.com%2Ffreepng%2Fuser-profile-avatar_13369988.html&psig=AOvVaw26jRsqd2smIzRrl2cPIMF-&ust=1717840585036000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCLCdpoCdyYYDFQAAAAAdAAAAABAo",
     },
     isAdmin: {
       type: Boolean,

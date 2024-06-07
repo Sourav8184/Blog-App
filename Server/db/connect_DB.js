@@ -1,16 +1,10 @@
 // Import modules:
-import dotenv from "dotenv";
-import mongoose from "mongoose";
 
-// .env configration:
-dotenv.config({
-  path: "./.env",
-});
+import mongoose from "mongoose";
 
 // Connnect Database method:
 const connect_DB = async () => {
   try {
-    console.log(process.env.MONGODB_ATLAS, process.env.DB_NAME);
     const connectionInstance = await mongoose.connect(
       `${process.env.MONGODB_ATLAS}/${process.env.DB_NAME}`
     );

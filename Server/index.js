@@ -1,9 +1,12 @@
 // Imports
+import "dotenv/config";
 import express from "express";
 import connect_DB from "./db/connect_DB.js";
-import userRouter from "./routes/userRoute.js";
 
 const app = express();
+
+// Middlewares:
+app.use(express.json());
 
 // DataBase Connection:
 connect_DB()
@@ -21,4 +24,9 @@ connect_DB()
     console.log("MONGO db connection failed !!! ", err);
   });
 
+// Import Routes:
+import userRouter from "./routes/userRoute.js";
+import authRouter from "./routes/authRoute.js";
+
 app.use("/api/user", userRouter);
+app.use("/api/auth", authRouter);
