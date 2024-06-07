@@ -1,6 +1,6 @@
 // Imports
 import express from "express";
-import { connect_DB } from "./db/connect_DB.js";
+import connect_DB from "./db/connect_DB.js";
 
 const app = express();
 
