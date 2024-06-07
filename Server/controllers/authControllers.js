@@ -6,7 +6,7 @@ import User from "../models/userModel.js ";
 
 import bcryptjs from "bcryptjs";
 
-const signin = asyncHandler(async (req, res) => {
+const signup = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
   if ([username, email, password].some((field) => field?.trim() === "")) {
     throw new ApiError(400, "All field are required! ");
@@ -38,4 +38,4 @@ const signin = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, createdUser, "User Registered Successfully"));
 });
 
-export { signin };
+export { signup };
