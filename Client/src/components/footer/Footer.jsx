@@ -76,7 +76,6 @@ function FooterCom() {
               target="_blank"
               icon={BsGithub}
             />
-            <Footer.Icon href="#" icon={BsDribbble} />
           </div>
         </div>
       </div>
