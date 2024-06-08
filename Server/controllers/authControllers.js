@@ -93,15 +93,15 @@ const signin = asyncHandler(async (req, res) => {
 
 const googleSignIn = asyncHandler(async (req, res) => {
   const { name, email, googlePhotoUrl } = req.body;
-  console.log("1");
+
   const existedUser = await User.findOne({
     $or: [{ email }],
   });
-  console.log("2");
+
   if (existedUser) {
     // if user is already Signup:
     // Generate a access token
-    console.log("3");
+
     const accessToken = jwt.sign(
       { id: existedUser._id },
       process.env.ACCESS_TOKEN_SECRET,
@@ -109,17 +109,17 @@ const googleSignIn = asyncHandler(async (req, res) => {
         expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
       }
     );
-    console.log("4");
+
     // find user and hide password:
     const loggedInUser = await User.findById(existedUser._id).select(
       "-password"
     );
-    console.log("5");
+
     const optionsForCookieNotChangeByFrontend = {
       httpOnly: true,
       secure: true,
     };
-    console.log("6");
+
     return res
       .status(200)
       .cookie("accessToken", accessToken, optionsForCookieNotChangeByFrontend)
@@ -133,13 +133,12 @@ const googleSignIn = asyncHandler(async (req, res) => {
         )
       );
   } else {
-    console.log("7");
     // if user are not Signup:
     const generatedPassword = generateRandomPassword();
     console.log(generatedPassword);
-    console.log("8");
+
     const hashPassword = bcryptjs.hashSync(generatedPassword, 16);
-    console.log("9");
+
     const newUser = await User.create({
       username:
         name.toLowerCase().split(" ").join("") + generateRandomPassword(),
@@ -147,7 +146,7 @@ const googleSignIn = asyncHandler(async (req, res) => {
       password: hashPassword,
       profilePicture: googlePhotoUrl,
     });
-    console.log("10");
+
     await newUser.save();
     const accessToken = jwt.sign(
       { id: newUser._id, isAdmin: newUser.isAdmin },
@@ -156,15 +155,15 @@ const googleSignIn = asyncHandler(async (req, res) => {
         expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
       }
     );
-    console.log("11");
+
     // find user and hide password:
     const loggedInUser = await User.findById(newUser._id).select("-password");
-    console.log("12");
+
     const optionsForCookieNotChangeByFrontend = {
       httpOnly: true,
       secure: true,
     };
-    console.log("13");
+
     return res
       .status(200)
       .cookie("accessToken", accessToken, optionsForCookieNotChangeByFrontend)

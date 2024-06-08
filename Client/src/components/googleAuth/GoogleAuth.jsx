@@ -13,20 +13,18 @@ import { GoogleAuthProvider } from "firebase/auth";
 import { getAuth, signInWithPopup } from "firebase/auth";
 
 function GoogleAuth() {
-  console.log("G1");
   const auth = getAuth(app);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log("G2");
+
   const handleGoogleClick = async () => {
     const provider = new GoogleAuthProvider();
-    console.log("G3");
+
     provider.setCustomParameters({ prompt: "select_account" });
-    console.log("G4");
+
     try {
-      console.log("G5");
       const resultFromGoogle = await signInWithPopup(auth, provider);
-      console.log("G6");
+
       const response = await fetch("api/auth/google", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -36,13 +34,11 @@ function GoogleAuth() {
           googlePhotoUrl: resultFromGoogle.user.photoURL,
         }),
       });
-      console.log("G7");
+
       const data = await response.json();
-      console.log("G8");
+
       if (response.ok) {
-        console.log("G9");
         dispatch(signInSuccess(data));
-        console.log("G10");
         navigate("/");
       }
     } catch (error) {
