@@ -1,13 +1,32 @@
+// Imports:
 import { React, useState } from "react";
 import { Button, Label, TextInput, Alert, Spinner } from "flowbite-react";
 import { Link, useNavigate } from "react-router-dom";
 
+// Redux:
+import { useDispatch, useSelector } from "react-redux";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../../redux//user/userSlice";
+
+// Component:
 function Signin() {
   const [formData, setFormData] = useState({});
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  // We are using isLoading and errorMessage in the signin component
+  // but in the Slice we create initial state with error and loading
+  // so we are destructring the error -> errroMessage and loading -> isLoading
+  const { loading: isLoading, error: errorMessage } = useSelector(
+    (state) => state.user
+  );
+  // For Navigating signin page to another page:
   const navigate = useNavigate();
 
+  // for dispatch action:
+  const dispatch = useDispatch();
+
+  // Set data into the formData:
   const handleChnage = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
     // console.log(formData);
@@ -17,28 +36,35 @@ function Signin() {
     e.preventDefault();
 
     if (!formData.email || !formData.password) {
-      return setErrorMessage("Please fill out all fields.");
+      // if error is occur then dispatch action signinFailure:
+      return dispatch(signInFailure("Please fill all the fields"));
     }
 
     try {
-      setIsLoading(true);
-      setErrorMessage(null);
+      // dispatch a action signinStart:
+      dispatch(signInStart());
+
       const response = await fetch("/api/auth/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
+
       const data = await response.json();
+
       if (data.success === false) {
-        return setErrorMessage(data.message);
+        // if error is occur then dispatch action signinFailure:
+        dispatch(signInFailure(data.message));
       }
-      setIsLoading(false);
+
       if (response.ok) {
+        // if everything is OK then dispatch action signinSuccess:
+        dispatch(signInSuccess(data));
         navigate("/");
       }
     } catch (error) {
-      setErrorMessage(error.message);
-      setIsLoading(false);
+      // if error is occur then dispatch action signinFailure:
+      dispatch(signInFailure("Something went wrong"));
     }
   };
 
@@ -98,7 +124,7 @@ function Signin() {
           </form>
           <div className="flex gap-2 text-sm mt-5">
             <span>Don't have an account ? </span>
-            <Link to="signin" className="text-blue-500">
+            <Link to="/signup" className="text-blue-500">
               SignUp
             </Link>
           </div>

@@ -14,30 +14,39 @@ function Signup() {
   };
 
   const handleSubmit = async (e) => {
+    // Stop the default behavior of an event:
     e.preventDefault();
 
+    // Validation:
     if (!formData.username || !formData.email || !formData.password) {
       return setErrorMessage("Please fill out all fields.");
     }
 
     try {
+      // in the starting loading -> true and error -> null:
       setIsLoading(true);
       setErrorMessage(null);
+
       const response = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
+
+      // convert response to JSON:
       const data = await response.json();
       if (data.success === false) {
         return setErrorMessage(data.message);
       }
+      // if everything is ok then loading false:
       setIsLoading(false);
       if (response.ok) {
+        // if everything is ok then loading false and go to signin page
         navigate("/signin");
       }
     } catch (error) {
-      setErrorMessage(error.message);
+      // if an error then sent a error Something went wrong
+      setErrorMessage("Something went wrong");
       setIsLoading(false);
     }
   };
@@ -107,7 +116,7 @@ function Signup() {
           </form>
           <div className="flex gap-2 text-sm mt-5">
             <span>Have and account ? </span>
-            <Link to="signin" className="text-blue-500">
+            <Link to="/signin" className="text-blue-500">
               Signin
             </Link>
           </div>
