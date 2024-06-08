@@ -10,6 +10,7 @@ import {
   signInSuccess,
   signInFailure,
 } from "../../redux//user/userSlice";
+import GoogleAuth from "../../components/googleAuth/GoogleAuth";
 
 // Component:
 function Signin() {
@@ -121,6 +122,7 @@ function Signin() {
                 "Sign In"
               )}
             </Button>
+            <GoogleAuth />
           </form>
           <div className="flex gap-2 text-sm mt-5">
             <span>Don't have an account ? </span>

@@ -7,6 +7,8 @@ import User from "../models/userModel.js ";
 
 import bcryptjs from "bcryptjs";
 
+import { generateRandomPassword } from "../utils/GenerateRandomPassword.js";
+
 const signup = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
   if ([username, email, password].some((field) => field?.trim() === "")) {
@@ -89,4 +91,93 @@ const signin = asyncHandler(async (req, res) => {
     );
 });
 
-export { signup, signin };
+const googleSignIn = asyncHandler(async (req, res) => {
+  const { name, email, googlePhotoUrl } = req.body;
+  console.log("1");
+  const existedUser = await User.findOne({
+    $or: [{ email }],
+  });
+  console.log("2");
+  if (existedUser) {
+    // if user is already Signup:
+    // Generate a access token
+    console.log("3");
+    const accessToken = jwt.sign(
+      { id: existedUser._id },
+      process.env.ACCESS_TOKEN_SECRET,
+      {
+        expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
+      }
+    );
+    console.log("4");
+    // find user and hide password:
+    const loggedInUser = await User.findById(existedUser._id).select(
+      "-password"
+    );
+    console.log("5");
+    const optionsForCookieNotChangeByFrontend = {
+      httpOnly: true,
+      secure: true,
+    };
+    console.log("6");
+    return res
+      .status(200)
+      .cookie("accessToken", accessToken, optionsForCookieNotChangeByFrontend)
+      .json(
+        new ApiResponse(
+          200,
+          {
+            user: loggedInUser,
+          },
+          "User loggedIn Successfully"
+        )
+      );
+  } else {
+    console.log("7");
+    // if user are not Signup:
+    const generatedPassword = generateRandomPassword();
+    console.log(generatedPassword);
+    console.log("8");
+    const hashPassword = bcryptjs.hashSync(generatedPassword, 16);
+    console.log("9");
+    const newUser = await User.create({
+      username:
+        name.toLowerCase().split(" ").join("") + generateRandomPassword(),
+      email,
+      password: hashPassword,
+      profilePicture: googlePhotoUrl,
+    });
+    console.log("10");
+    await newUser.save();
+    const accessToken = jwt.sign(
+      { id: newUser._id, isAdmin: newUser.isAdmin },
+      process.env.ACCESS_TOKEN_SECRET,
+      {
+        expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
+      }
+    );
+    console.log("11");
+    // find user and hide password:
+    const loggedInUser = await User.findById(newUser._id).select("-password");
+    console.log("12");
+    const optionsForCookieNotChangeByFrontend = {
+      httpOnly: true,
+      secure: true,
+    };
+    console.log("13");
+    return res
+      .status(200)
+      .cookie("accessToken", accessToken, optionsForCookieNotChangeByFrontend)
+      .json(
+        new ApiResponse(
+          200,
+          {
+            user: loggedInUser,
+          },
+          "User loggedIn Successfully"
+        )
+      );
+  }
+});
+
+export { signup, signin, googleSignIn };
