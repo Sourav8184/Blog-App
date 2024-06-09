@@ -135,7 +135,7 @@ const googleSignIn = asyncHandler(async (req, res) => {
   } else {
     // if user are not Signup:
     const generatedPassword = generateRandomPassword();
-    console.log(generatedPassword);
+    // console.log(generatedPassword);
 
     const hashPassword = bcryptjs.hashSync(generatedPassword, 16);
 
