@@ -1,11 +1,17 @@
 // Imports:
 import express from "express";
+import cookieParser from "cookie-parser";
 const router = express.Router();
 
-// Import Controllers:
-import { homePage } from "../controllers/userController.js";
+const app = express();
+app.use(cookieParser());
 
-router.route("/home").get(homePage);
+// Import Controllers:
+import { update } from "../controllers/userController.js";
+import { verifyJWT } from "../utils/userVerification.js";
+
+router.route("/update/:userId").put(verifyJWT, update);
 
 // Export Route:
+
 export default router;

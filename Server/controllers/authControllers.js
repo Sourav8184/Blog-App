@@ -63,7 +63,12 @@ const signin = asyncHandler(async (req, res) => {
   }
 
   const accessToken = jwt.sign(
-    { userId: user._id },
+    {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    },
     process.env.ACCESS_TOKEN_SECRET,
     {
       expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
@@ -103,7 +108,12 @@ const googleSignIn = asyncHandler(async (req, res) => {
     // Generate a access token
 
     const accessToken = jwt.sign(
-      { id: existedUser._id },
+      {
+        id: existedUser._id,
+        username: existedUser.username,
+        email: existedUser.email,
+        isAdmin: existedUser.isAdmin,
+      },
       process.env.ACCESS_TOKEN_SECRET,
       {
         expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
@@ -149,7 +159,12 @@ const googleSignIn = asyncHandler(async (req, res) => {
 
     await newUser.save();
     const accessToken = jwt.sign(
-      { id: newUser._id, isAdmin: newUser.isAdmin },
+      {
+        id: newUser._id,
+        username: newUser.username,
+        email: newUser.email,
+        isAdmin: newUser.isAdmin,
+      },
       process.env.ACCESS_TOKEN_SECRET,
       {
         expiresIn: process.env.ACCESS_TOKEN_EXPIRY,

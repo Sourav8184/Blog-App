@@ -2,10 +2,12 @@
 import "dotenv/config";
 import express from "express";
 import connect_DB from "./db/connect_DB.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
 // Middlewares:
+app.use(cookieParser());
 app.use(express.json());
 
 // DataBase Connection:
