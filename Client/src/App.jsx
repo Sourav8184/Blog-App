@@ -13,6 +13,8 @@ import Signup from "./pages/signup/Signup";
 import Header from "./components/header/Header";
 import FooterCom from "./components/footer/Footer";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
+import AdminPrivateRoute from "./components/adminPrivateRoute/AdminPrivateRoute";
+import CreatePost from "./pages/createPost/CreatePost";
 
 // App Component:
 function App() {
@@ -24,6 +26,9 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
+        <Route element={<AdminPrivateRoute />}>
+          <Route path="/create-post" element={<CreatePost />} />
         </Route>
         <Route path="/projects" element={<Projects />} />
         <Route path="/signin" element={<Signin />} />
