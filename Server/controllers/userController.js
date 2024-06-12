@@ -5,6 +5,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import ApiError from "../utils/ApiError.js";
 import bcryptjs from "bcryptjs";
 
+/*
 // Email validation function:
 function validateEmail(email) {
   const emailParts = email.split("@");
@@ -14,18 +15,12 @@ function validateEmail(email) {
     emailParts[1] === "gmail.com"
   );
 }
+*/
 
 // Controllers:
 const update = asyncHandler(async (req, res) => {
   if (req.user.id !== req.params.userId) {
     throw new ApiError(403, "You are not allowed to update this user");
-  }
-
-  if (!validateEmail(req.body.email)) {
-    throw new ApiError(
-      400,
-      "only this Email format username@gmail.com are allow"
-    );
   }
 
   if (req.body.password) {
