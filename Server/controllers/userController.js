@@ -103,4 +103,15 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { updateUser, deleteUser };
+const signoutUser = asyncHandler(async (req, res) => {
+  try {
+    return res
+      .clearCookie("accessToken")
+      .status(200)
+      .json(new ApiResponse(200, {}, "User Delete Successfully"));
+  } catch (error) {
+    throw new ApiError(400, `User cannot Signout Server Error ${error}`);
+  }
+});
+
+export { updateUser, deleteUser, signoutUser };
