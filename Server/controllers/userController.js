@@ -18,7 +18,7 @@ function validateEmail(email) {
 */
 
 // Controllers:
-const update = asyncHandler(async (req, res) => {
+const updateUser = asyncHandler(async (req, res) => {
   if (req.user.id !== req.params.userId) {
     throw new ApiError(403, "You are not allowed to update this user");
   }
@@ -80,4 +80,27 @@ const update = asyncHandler(async (req, res) => {
   }
 });
 
-export { update };
+const deleteUser = asyncHandler(async (req, res) => {
+  if (req.user.id !== req.params.userId) {
+    throw new ApiError(403, "You are not allowed to delete this user");
+  }
+
+  try {
+    const deletedUser = await User.findById(req.params.userId);
+    await User.findByIdAndDelete(req.params.userId);
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {
+          user: deletedUser,
+        },
+        "User Delete Successfully"
+      )
+    );
+  } catch (error) {
+    throw new ApiError(400, `User not delete Server Error ${error}`);
+  }
+});
+
+export { updateUser, deleteUser };

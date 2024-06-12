@@ -7,10 +7,11 @@ const app = express();
 app.use(cookieParser());
 
 // Import Controllers:
-import { update } from "../controllers/userController.js";
+import { updateUser, deleteUser } from "../controllers/userController.js";
 import { verifyJWT } from "../utils/userVerification.js";
 
-router.route("/update/:userId").put(verifyJWT, update);
+router.route("/update/:userId").put(verifyJWT, updateUser);
+router.route("/delete/:userId").delete(verifyJWT, deleteUser);
 
 // Export Route:
 
