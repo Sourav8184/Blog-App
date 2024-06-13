@@ -8,6 +8,8 @@ import { set } from "mongoose";
 function DashPosts() {
   const { currentUser } = useSelector((state) => state.user);
   const [userPosts, setUserPosts] = useState([]);
+  const [showMore, setShowMore] = useState(true);
+
   console.log(userPosts);
   useEffect(() => {
     const fetchPosts = async () => {
@@ -20,6 +22,9 @@ function DashPosts() {
 
         if (response.ok) {
           setUserPosts(data.data.posts);
+          if (data.data.posts.length < 9) {
+            setShowMore(false);
+          }
         }
       } catch (error) {
         console.log("Error while fetching the data");
@@ -27,6 +32,24 @@ function DashPosts() {
     };
     if (currentUser.data.user.isAdmin) fetchPosts();
   }, [currentUser.data.user._id]);
+
+  const handleShowMore = async () => {
+    const startIndex = userPosts.length;
+    try {
+      const response = await fetch(
+        `/api/post/getposts?userId=${currentUser.data.user._id}&startIndex=${startIndex}`
+      );
+      const data = await response.json();
+      if (response.ok) {
+        setUserPosts((prev) => [...prev, ...data.data.posts]);
+        if (data.data.posts.length < 9) {
+          setShowMore(false);
+        }
+      }
+    } catch (error) {
+      console.log("Error while Showing more posts the data");
+    }
+  };
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
       {currentUser.data.user.isAdmin && userPosts.length > 0 ? (
@@ -82,6 +105,13 @@ function DashPosts() {
               </Table.Body>
             ))}
           </Table>
+          {showMore && (
+            <button
+              onClick={handleShowMore}
+              className="w-full text-teal-500 self-center text-sm py-7">
+              Show more
+            </button>
+          )}
         </>
       ) : (
         <p>You have no posts yet!</p>
