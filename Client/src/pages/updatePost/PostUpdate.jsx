@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextInput, Select, FileInput, Button, Alert } from "flowbite-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // React-Quill:
 import ReactQuill from "react-quill";
@@ -18,13 +19,37 @@ import { app } from "../../firebase/firebase.js";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
-function CreatePost() {
+function PostUpdate() {
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
   const [publishError, setPublishError] = useState(null);
   const navigate = useNavigate();
+  const { postId } = useParams();
+  const { currentUser } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    try {
+      const fetchPost = async () => {
+        const response = await fetch(`/api/post/getposts?postId=${postId}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          console.log("error ", data.message);
+          setPublishError(data.message);
+          return;
+        } else {
+          setPublishError(null);
+          setFormData(data.data.posts[0]);
+        }
+      };
+
+      fetchPost();
+    } catch (error) {
+      console.log("err ", error);
+    }
+  }, [postId]);
 
   const handleUpdloadImage = async () => {
     try {
@@ -37,6 +62,7 @@ function CreatePost() {
       const fileName = new Date().getTime() + "-" + file.name;
       const storageRef = ref(storage, fileName);
       const uploadTask = uploadBytesResumable(storageRef, file);
+
       uploadTask.on(
         "state_changed",
         (snapshot) => {
@@ -65,16 +91,17 @@ function CreatePost() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await fetch("/api/post/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
+      const response = await fetch(
+        `/api/post/updatepost/${formData._id}/${currentUser.data.user._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       const data = await response.json();
 
       if (!response.ok) {
@@ -84,7 +111,7 @@ function CreatePost() {
 
       if (response.ok) {
         setPublishError(null);
-        navigate(`/post/${data.data.savedPost.slug}`);
+        navigate(`/post/${data.data.updatedPost.slug}`);
       }
     } catch (error) {
       setPublishError("Something went wrong");
@@ -92,7 +119,7 @@ function CreatePost() {
   };
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">
-      <h1 className="text-center text-3xl my-7 font-semibold">Create a post</h1>
+      <h1 className="text-center text-3xl my-7 font-semibold">Update a post</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
           <TextInput
@@ -104,11 +131,13 @@ function CreatePost() {
             onChange={(e) =>
               setFormData({ ...formData, title: e.target.value })
             }
+            value={formData.title}
           />
           <Select
             onChange={(e) =>
               setFormData({ ...formData, category: e.target.value })
-            }>
+            }
+            value={formData.category}>
             <option value="uncategorized">Select a category</option>
             <option value="html">Html</option>
             <option value="css">Css</option>
@@ -122,7 +151,7 @@ function CreatePost() {
             <option value="mongodb">MongoDB</option>
             <option value="firebase">Firebase</option>
             <option value="cloudinary">Cloudinary</option>
-            <option value="cloudinary">Other</option>
+            <option value="Other">Other</option>
           </Select>
         </div>
         <div className="flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3">
@@ -159,6 +188,7 @@ function CreatePost() {
           />
         )}
         <ReactQuill
+          value={formData.content}
           theme="snow"
           placeholder="Write something..."
           className="h-72 mb-12"
@@ -168,7 +198,7 @@ function CreatePost() {
           }}
         />
         <Button type="submit" gradientDuoTone="purpleToPink">
-          Publish
+          Update Post
         </Button>
         {publishError && (
           <Alert className="mt-5" color="failure">
@@ -180,4 +210,4 @@ function CreatePost() {
   );
 }
 
-export default CreatePost;
+export default PostUpdate;

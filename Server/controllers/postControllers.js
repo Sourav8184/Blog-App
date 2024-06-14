@@ -110,3 +110,35 @@ export const deletePost = asyncHandler(async (req, res) => {
     throw new ApiError(403, "Something went wrong while deleting the post");
   }
 });
+
+export const updatePost = asyncHandler(async (req, res) => {
+  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+    throw new ApiError(403, "You are not allowed to update this post");
+  }
+
+  try {
+    const updatedPost = await postModel.findByIdAndUpdate(
+      req.params.postId,
+      {
+        $set: {
+          title: req.body.title,
+          content: req.body.content,
+          category: req.body.category,
+          image: req.body.image,
+        },
+      },
+      { new: true }
+    );
+    return res
+      .status(201)
+      .json(
+        new ApiResponse(
+          200,
+          { updatedPost },
+          "This Post is update Successfully"
+        )
+      );
+  } catch (error) {
+    throw new ApiError(403, "Something went wrong while updating the post");
+  }
+});
