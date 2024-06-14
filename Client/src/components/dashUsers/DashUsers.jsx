@@ -31,7 +31,22 @@ function DashUsers() {
   }, [currentUser.data.user._id]);
 
   const handleShowMore = async () => {
-    console.log("show more");
+    const startIndex = users.length;
+    try {
+      const response = await fetch(
+        `/api/user/getusers?startIndex=${startIndex}`
+      );
+      const data = await response.json();
+      console.log(data);
+      if (response.ok) {
+        setUsers((prev) => [...prev, ...data.data.allUsersWithoutPassword]);
+        if (data.data.allUsersWithoutPassword < 9) {
+          setShowMore(false);
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const handleDeleteUser = () => {
