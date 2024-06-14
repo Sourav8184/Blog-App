@@ -89,3 +89,24 @@ export const getPost = asyncHandler(async (req, res) => {
     );
   }
 });
+
+export const deletePost = asyncHandler(async (req, res) => {
+  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
+    throw new ApiError(403, "You are not allowed to delete this post");
+  }
+
+  try {
+    const deletedPost = await postModel.findByIdAndDelete(req.params.postId);
+    return res
+      .status(201)
+      .json(
+        new ApiResponse(
+          200,
+          { deletedPost },
+          "This Post is delete Successfully"
+        )
+      );
+  } catch (error) {
+    throw new ApiError(403, "Something went wrong while deleting the post");
+  }
+});
