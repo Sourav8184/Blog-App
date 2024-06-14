@@ -8,7 +8,7 @@ function DashUsers() {
   const { currentUser } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
   const [showMore, setShowMore] = useState(true);
-  const [showModel, setShowModel] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState("");
 
   useEffect(() => {
@@ -49,9 +49,21 @@ function DashUsers() {
     }
   };
 
-  const handleDeleteUser = () => {
-    console.log("delete");
-    setShowModel(false);
+  const handleDeleteUser = async () => {
+    try {
+      const res = await fetch(`/api/user/delete/${userIdToDelete}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setUsers((prev) => prev.filter((user) => user._id !== userIdToDelete));
+        setShowModal(false);
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
@@ -93,7 +105,7 @@ function DashUsers() {
                   <Table.Cell>
                     <span
                       onClick={() => {
-                        setShowModel(true);
+                        setShowModal(true);
                         setUserIdToDelete(user._id);
                       }}
                       className="font-medium text-red-500 hover:underline cursor-pointer">
@@ -116,8 +128,8 @@ function DashUsers() {
         <p>You have no posts yet!</p>
       )}
       <Modal
-        show={showModel}
-        onClose={() => setShowModel(false)}
+        show={showModal}
+        onClose={() => setShowModal(false)}
         popup
         size="md">
         <Modal.Header />
@@ -131,7 +143,7 @@ function DashUsers() {
               <Button color="failure" onClick={handleDeleteUser}>
                 Yes, I'm sure
               </Button>
-              <Button color="gray" onClick={() => setShowModel(false)}>
+              <Button color="gray" onClick={() => setShowModal(false)}>
                 No, cancel
               </Button>
             </div>
