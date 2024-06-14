@@ -65,7 +65,7 @@ function Signin() {
       }
     } catch (error) {
       // if error is occur then dispatch action signinFailure:
-      dispatch(signInFailure("Something went wrong"));
+      dispatch(signInFailure(error.message));
     }
   };
 

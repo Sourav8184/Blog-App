@@ -114,4 +114,50 @@ const signoutUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { updateUser, deleteUser, signoutUser };
+const getUser = asyncHandler(async (req, res) => {
+  if (!req.user.isAdmin) {
+    throw new ApiError(400, `User's cannot Get Because you are not Admin`);
+  }
+
+  try {
+    const startIndex = parseInt(req.query.startIndex) || 0;
+
+    const limit = parseInt(req.query.limit) || 9;
+
+    const sortDirection = req.query.sort === "asc" ? 1 : -1;
+
+    const allUsersWithoutPassword = await User.find()
+      .select("-password")
+      .sort({ createdAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit);
+
+    const totalUsers = await User.countDocuments();
+
+    const now = new Date();
+
+    const oneMonthsAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+
+    const totalUserOneMonthAgo = await User.countDocuments({
+      createdAt: { $gte: oneMonthsAgo },
+    });
+
+    return res
+      .status(201)
+      .json(
+        new ApiResponse(
+          200,
+          { allUsersWithoutPassword, totalUsers, totalUserOneMonthAgo },
+          "User Get Successfully"
+        )
+      );
+  } catch (error) {
+    throw new ApiError(400, `User cannot Get Server Error ${error}`);
+  }
+});
+
+export { updateUser, deleteUser, signoutUser, getUser };
