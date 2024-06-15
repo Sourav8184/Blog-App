@@ -23,13 +23,10 @@ function FooterCom() {
             <div>
               <Footer.Title title="About" />
               <Footer.LinkGroup col>
-                <Footer.Link href="#" target="_blank" rel="noopener noreferrer">
+                <Footer.Link href="/projects" rel="noopener noreferrer">
                   Projects
                 </Footer.Link>
-                <Footer.Link
-                  href="/about"
-                  target="_blank"
-                  rel="noopener noreferrer">
+                <Footer.Link href="/" rel="noopener noreferrer">
                   Sourav's Blog
                 </Footer.Link>
               </Footer.LinkGroup>
@@ -43,14 +40,14 @@ function FooterCom() {
                   rel="noopener noreferrer">
                   Github
                 </Footer.Link>
-                <Footer.Link href="#">Discord</Footer.Link>
+                <Footer.Link href="/">Discord</Footer.Link>
               </Footer.LinkGroup>
             </div>
             <div>
               <Footer.Title title="Legal" />
               <Footer.LinkGroup col>
-                <Footer.Link href="#">Privacy Policy</Footer.Link>
-                <Footer.Link href="#">Terms &amp; Conditions</Footer.Link>
+                <Footer.Link href="/">Privacy Policy</Footer.Link>
+                <Footer.Link href="/">Terms &amp; Conditions</Footer.Link>
               </Footer.LinkGroup>
             </div>
           </div>
@@ -58,7 +55,7 @@ function FooterCom() {
         <Footer.Divider />
         <div className="w-full sm:flex sm:items-center sm:justify-between">
           <Footer.Copyright
-            href="#"
+            href="/"
             by="Sourav's blog"
             year={new Date().getFullYear()}
           />

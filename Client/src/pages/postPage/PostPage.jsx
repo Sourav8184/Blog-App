@@ -3,6 +3,8 @@ import { Button, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import NewArticles from "../../components/newArticles/NewArticles";
+import CommentSection from "../../components/commentSection/CommentSection";
+
 function PostPage() {
   const { postSlug } = useParams();
   const [loading, setLoading] = useState(true);
@@ -70,6 +72,7 @@ function PostPage() {
       <div className="flex flex-col justify-center items-center mb-5">
         <h1 className="text-xl mt-5">Recent articles</h1>
       </div>
+      <CommentSection postId={post._id} />
     </main>
   );
 }

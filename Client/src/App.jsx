@@ -17,10 +17,13 @@ import AdminPrivateRoute from "./components/adminPrivateRoute/AdminPrivateRoute"
 import CreatePost from "./pages/createPost/CreatePost";
 import PostUpdate from "./pages/updatePost/PostUpdate";
 import PostPage from "./pages/postPage/PostPage";
+import ScrollToTop from "./components/scrollToTop/ScrollToTop";
+
 // App Component:
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />

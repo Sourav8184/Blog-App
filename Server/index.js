@@ -30,7 +30,9 @@ connect_DB()
 import userRouter from "./routes/userRoute.js";
 import authRouter from "./routes/authRoute.js";
 import postRouter from "./routes/postRoute.js";
+import commentRouter from "./routes/commentRoute.js";
 
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/post", postRouter);
+app.use("/api/comment", commentRouter);
