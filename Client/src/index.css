@@ -39,3 +39,12 @@ body {
 .dark .post-content a {
   color: red;
 }
+
+.post-image {
+  border: 4px solid black;
+  border-radius: 50px;
+}
+
+.dark .post-image {
+  border: 4px solid white;
+}
