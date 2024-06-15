@@ -41,3 +41,26 @@ export const getComments = asyncHandler(async (req, res) => {
     throw new ApiError(403, "Something went wrong while get the comment");
   }
 });
+
+export const likeComment = asyncHandler(async (req, res) => {
+  try {
+    const comment = await commentModel.findById(req.params.commentId);
+    if (!comment) {
+      throw new ApiError(404, "comment not found");
+    }
+    const userIndex = comment.likes.indexOf(req.user.id);
+    if (userIndex === -1) {
+      comment.numberOfLikes += 1;
+      comment.likes.push(req.user.id);
+    } else {
+      comment.numberOfLikes -= 1;
+      comment.likes.splice(userIndex, 1);
+    }
+    await comment.save();
+    return res
+      .status(201)
+      .json(new ApiResponse(200, {}, "Like the  Comment Successfully"));
+  } catch (error) {
+    throw new ApiError(403, "Something went wrong while Like the comment");
+  }
+});
