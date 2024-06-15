@@ -114,7 +114,7 @@ const signoutUser = asyncHandler(async (req, res) => {
   }
 });
 
-const getUser = asyncHandler(async (req, res) => {
+const getUsers = asyncHandler(async (req, res) => {
   if (!req.user.isAdmin) {
     throw new ApiError(400, `User's cannot Get Because you are not Admin`);
   }
@@ -152,12 +152,23 @@ const getUser = asyncHandler(async (req, res) => {
         new ApiResponse(
           200,
           { allUsersWithoutPassword, totalUsers, totalUserOneMonthAgo },
-          "User Get Successfully"
+          "Users Get Successfully"
         )
       );
+  } catch (error) {
+    throw new ApiError(400, `Users cannot Get Server Error ${error}`);
+  }
+});
+
+const getUser = asyncHandler(async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId).select("-password");
+    return res
+      .status(201)
+      .json(new ApiResponse(200, { user }, "User Get Successfully"));
   } catch (error) {
     throw new ApiError(400, `User cannot Get Server Error ${error}`);
   }
 });
 
-export { updateUser, deleteUser, signoutUser, getUser };
+export { updateUser, deleteUser, signoutUser, getUsers, getUser };

@@ -26,3 +26,18 @@ export const createComment = asyncHandler(async (req, res) => {
     throw new ApiError(403, "Something went wrong while write the comment");
   }
 });
+
+export const getComments = asyncHandler(async (req, res) => {
+  try {
+    const allComments = await commentModel
+      .find({ postId: req.params.postId })
+      .sort({ createdAt: -1 });
+    return res
+      .status(201)
+      .json(
+        new ApiResponse(200, { allComments }, "Get All Comment Successfully")
+      );
+  } catch (error) {
+    throw new ApiError(403, "Something went wrong while get the comment");
+  }
+});
