@@ -10,6 +10,7 @@ function CommentSection({ postId }) {
   const [comment, setComment] = useState("");
   const [commentError, setCommentError] = useState(null);
   const [comments, setComments] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getAllComments = async () => {
@@ -49,6 +50,35 @@ function CommentSection({ postId }) {
       }
     } catch (error) {
       setCommentError(error.message);
+    }
+  };
+
+  const handleLike = async (commentId) => {
+    try {
+      if (!currentUser) {
+        navigate("signin");
+        return;
+      }
+      const respones = await fetch(`/api/comment/likecomment/${commentId}`, {
+        method: "PUT",
+      });
+      const data = await respones.json();
+
+      if (respones.ok) {
+        setComments(
+          comments.map((comment) =>
+            comment._id === commentId
+              ? {
+                  ...comment,
+                  likes: data.data.comment.likes,
+                  numberOfLikes: data.data.comment.numberOfLikes,
+                }
+              : comment
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
@@ -114,7 +144,7 @@ function CommentSection({ postId }) {
             </div>
           </div>
           {comments.map((comment) => (
-            <Comments key={comment._id} comment={comment} />
+            <Comments key={comment._id} comment={comment} onLike={handleLike} />
           ))}
         </>
       )}

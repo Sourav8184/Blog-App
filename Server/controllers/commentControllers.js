@@ -59,7 +59,9 @@ export const likeComment = asyncHandler(async (req, res) => {
     await comment.save();
     return res
       .status(201)
-      .json(new ApiResponse(200, {}, "Like the  Comment Successfully"));
+      .json(
+        new ApiResponse(200, { comment }, "Like the  Comment Successfully")
+      );
   } catch (error) {
     throw new ApiError(403, "Something went wrong while Like the comment");
   }
