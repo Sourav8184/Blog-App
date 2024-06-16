@@ -94,3 +94,29 @@ export const editComment = asyncHandler(async (req, res) => {
     throw new ApiError(403, "Something went wrong while Like the comment");
   }
 });
+
+export const deleteComment = asyncHandler(async (req, res) => {
+  try {
+    const comment = await commentModel.findById(req.params.commentId);
+    if (!comment) {
+      throw new ApiError(404, "comment not found");
+    }
+    if (req.user.id != comment.userId && !req.user.isAdmin) {
+      throw new ApiError(404, "You are not allow to delete this comment");
+    }
+    const deletedComment = await commentModel.findByIdAndDelete(
+      req.params.commentId
+    );
+    return res
+      .status(201)
+      .json(
+        new ApiResponse(
+          200,
+          { deletedComment },
+          "Delete this  Comment Successfully"
+        )
+      );
+  } catch (error) {
+    throw new ApiError(403, "Something went wrong while deleting the comment");
+  }
+});
