@@ -163,6 +163,9 @@ const getUsers = asyncHandler(async (req, res) => {
 const getUser = asyncHandler(async (req, res) => {
   try {
     const user = await User.findById(req.params.userId).select("-password");
+    if (!user) {
+      throw new ApiError(400, `User cannot Get`);
+    }
     return res
       .status(201)
       .json(new ApiResponse(200, { user }, "User Get Successfully"));
