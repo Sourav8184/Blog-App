@@ -66,3 +66,31 @@ export const likeComment = asyncHandler(async (req, res) => {
     throw new ApiError(403, "Something went wrong while Like the comment");
   }
 });
+
+export const editComment = asyncHandler(async (req, res) => {
+  try {
+    const comment = await commentModel.findById(req.params.commentId);
+    if (!comment) {
+      throw new ApiError(404, "comment not found");
+    }
+
+    if (comment.userId !== req.user.id && !req.user.isAdmin) {
+      throw new ApiError(404, "You are not allow to edit this post");
+    }
+
+    const editComment = await commentModel.findByIdAndUpdate(
+      req.params.commentId,
+      {
+        content: req.body.content,
+      },
+      { new: true }
+    );
+    return res
+      .status(201)
+      .json(
+        new ApiResponse(200, { editComment }, "Like the  Comment Successfully")
+      );
+  } catch (error) {
+    throw new ApiError(403, "Something went wrong while Like the comment");
+  }
+});
