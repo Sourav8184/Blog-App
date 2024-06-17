@@ -12,16 +12,14 @@ function NewArticles() {
         <Button
           gradientDuoTone="purpleToPink"
           className="rounded-tl-xl rounded-bl-none">
-          <a
-            href="https://www.100jsprojects.com"
-            target="_blank"
-            rel="noopener noreferrer">
-            100 JavaScript Questions
-          </a>
+          <a href="#">100 JavaScript Questions</a>
         </Button>
       </div>
       <div className="p-7 flex-1">
-        <img src="https://bairesdev.mo.cloudinary.net/blog/2023/08/What-Is-JavaScript-Used-For.jpg" />
+        <img
+          style={{ border: ".1px solid black", borderRadius: "20px" }}
+          src="https://thumbs.dreamstime.com/b/content-writer-blog-articles-creation-concept-people-characters-freelance-work-business-marketing-vector-content-writer-159151388.jpg"
+        />
       </div>
     </div>
   );

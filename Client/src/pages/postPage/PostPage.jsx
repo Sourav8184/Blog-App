@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import NewArticles from "../../components/newArticles/NewArticles";
 import CommentSection from "../../components/commentSection/CommentSection";
+import PostCard from "../../components/postCard/PostCard";
 
 function PostPage() {
   const { postSlug } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [post, setPost] = useState(null);
+  const [recentPosts, setRecentPosts] = useState(null);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -34,6 +36,21 @@ function PostPage() {
     fetchPost();
   }, [postSlug]);
 
+  useEffect(() => {
+    try {
+      const fetchRecentPosts = async () => {
+        const response = await fetch(`/api/post/getposts?limit=3`);
+        const data = await response.json();
+        if (response.ok) {
+          setRecentPosts(data.data.posts);
+        }
+      };
+      fetchRecentPosts();
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, []);
+  console.log(recentPosts);
   if (loading)
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -69,10 +86,14 @@ function PostPage() {
       <div className="max-w-4xl mx-auto w-full">
         <NewArticles />
       </div>
+      <CommentSection postId={post._id} />
       <div className="flex flex-col justify-center items-center mb-5">
         <h1 className="text-xl mt-5">Recent articles</h1>
+        <div className="flex flex-wrap gap-5 mt-5 justify-center">
+          {recentPosts &&
+            recentPosts.map((post) => <PostCard key={post._id} post={post} />)}
+        </div>
       </div>
-      <CommentSection postId={post._id} />
     </main>
   );
 }
