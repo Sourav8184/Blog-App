@@ -6,6 +6,7 @@ import {
   likeComment,
   editComment,
   deleteComment,
+  getcomments,
 } from "../controllers/commentControllers.js";
 import { verifyJWT } from "../utils/userVerification.js";
 
@@ -14,5 +15,5 @@ router.route("/getpostcomment/:postId").get(getComments);
 router.route("/likecomment/:commentId").put(verifyJWT, likeComment);
 router.route("/editcomment/:commentId").put(verifyJWT, editComment);
 router.route("/deletecomment/:commentId").delete(verifyJWT, deleteComment);
-
+router.route("/getcomments").get(verifyJWT, getcomments);
 export default router;
