@@ -39,7 +39,7 @@ function PostPage() {
   useEffect(() => {
     try {
       const fetchRecentPosts = async () => {
-        const response = await fetch(`/api/post/getposts?limit=4`);
+        const response = await fetch(`/api/post/getposts?limit=3`);
         const data = await response.json();
         if (response.ok) {
           setRecentPosts(data.data.posts);
@@ -58,7 +58,7 @@ function PostPage() {
       </div>
     );
   return (
-    <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
+    <main className="p-3 flex flex-col max-w-8xl mx-auto min-h-screen">
       <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
         {post && post.title}
       </h1>
@@ -83,11 +83,11 @@ function PostPage() {
       <div
         className="p-3 max-w-2xl mx-auto w-full post-content"
         dangerouslySetInnerHTML={{ __html: post && post.content }}></div>
-      <div className="max-w-4xl mx-auto w-full">
+      <div className="max-w-4xl mx-auto w-full ">
         <NewArticles />
       </div>
       <CommentSection postId={post._id} />
-      <div className="flex flex-col justify-center items-center mb-5">
+      <div className="flex flex-col max-w-full justify-center items-center mb-5">
         <h1 className="text-xl mt-5">Recent articles</h1>
         <div className="flex justify-center items-center gap-5 mt-5 flex-wrap">
           {recentPosts &&
