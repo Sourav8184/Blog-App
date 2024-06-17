@@ -8,6 +8,9 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Projects from "./pages/project/Projects";
 import Signin from "./pages/signin/Signin";
 import Signup from "./pages/signup/Signup";
+import PostUpdate from "./pages/updatePost/PostUpdate";
+import PostPage from "./pages/postPage/PostPage";
+import Search from "./pages/search/Search";
 
 // Import components:
 import Header from "./components/header/Header";
@@ -15,8 +18,6 @@ import FooterCom from "./components/footer/Footer";
 import PrivateRoute from "./components/privateRoute/PrivateRoute";
 import AdminPrivateRoute from "./components/adminPrivateRoute/AdminPrivateRoute";
 import CreatePost from "./pages/createPost/CreatePost";
-import PostUpdate from "./pages/updatePost/PostUpdate";
-import PostPage from "./pages/postPage/PostPage";
 import ScrollToTop from "./components/scrollToTop/ScrollToTop";
 
 // App Component:
@@ -30,6 +31,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/search" element={<Search />} />
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>

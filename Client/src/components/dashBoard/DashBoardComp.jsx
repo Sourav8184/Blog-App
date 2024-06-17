@@ -22,7 +22,7 @@ function DashBoardComp() {
   const [lastMonthUsers, setLastMonthUsers] = useState(0);
   const [lastMonthPosts, setLastMonthPosts] = useState(0);
   const [lastMonthComments, setLastMonthComments] = useState(0);
-  console.log("hello");
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -58,10 +58,9 @@ function DashBoardComp() {
       try {
         const response = await fetch("/api/comment/getcomments?limit=5");
         const data = await response.json();
-
         if (response.ok) {
           setComments(data.data.comments);
-          setTotalComments(data.data.totalComents);
+          setTotalComments(data.data.totalComments);
           setLastMonthComments(data.data.lastMonthComments);
         }
       } catch (error) {
