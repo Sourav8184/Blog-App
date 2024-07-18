@@ -122,7 +122,11 @@ function CreatePost() {
             <option value="mongodb">MongoDB</option>
             <option value="firebase">Firebase</option>
             <option value="cloudinary">Cloudinary</option>
-            <option value="cloudinary">Other</option>
+            <option value="authentication & authorization">
+              Authentication & Authorization
+            </option>
+            <option value="jwt">JWT</option>
+            <option value="Other">Other</option>
           </Select>
         </div>
         <div className="flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3">
