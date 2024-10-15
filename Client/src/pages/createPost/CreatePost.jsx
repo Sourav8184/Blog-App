@@ -110,23 +110,8 @@ function CreatePost() {
               setFormData({ ...formData, category: e.target.value })
             }>
             <option value="uncategorized">Select a category</option>
-            <option value="html">Html</option>
-            <option value="css">Css</option>
-            <option value="css">Sass</option>
-            <option value="javascript">Javascript</option>
-            <option value="tailwind">Tailwind</option>
-            <option value="bootstrap">Bootstrap</option>
-            <option value="reactjs">ReactJs</option>
-            <option value="nodejs">NodeJs</option>
-            <option value="expressjs">ExpressJs</option>
-            <option value="mongodb">MongoDB</option>
-            <option value="firebase">Firebase</option>
-            <option value="cloudinary">Cloudinary</option>
-            <option value="authentication & authorization">
-              Authentication & Authorization
-            </option>
-            <option value="jwt">JWT</option>
-            <option value="Other">Other</option>
+            <option value="Rent">Rent</option>
+            <option value="Sale">Sale</option>
           </Select>
         </div>
         <div className="flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3">

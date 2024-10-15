@@ -31,7 +31,8 @@ function DashPosts() {
         console.log("Error while fetching the data");
       }
     };
-    if (currentUser.data.user.isAdmin) fetchPosts();
+    // if (currentUser.data.user.isAdmin) fetchPosts();
+    fetchPosts();
   }, [currentUser.data.user._id]);
 
   const handleShowMore = async () => {
@@ -76,7 +77,7 @@ function DashPosts() {
 
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
-      {currentUser.data.user.isAdmin && userPosts.length > 0 ? (
+      {userPosts.length > 0 ? (
         <>
           <Table hoverable className="shadow-md">
             <Table.Head>
@@ -145,6 +146,14 @@ function DashPosts() {
       ) : (
         <p>You have no posts yet!</p>
       )}
+      <Link to={"/create-post"}>
+        <Button
+          type="button"
+          gradientDuoTone="purpleToPink"
+          className="w-full mt-4">
+          Create a post
+        </Button>
+      </Link>
       <Modal
         show={showModel}
         onClose={() => setShowModel(false)}

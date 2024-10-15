@@ -5,28 +5,17 @@ function About() {
       <div className="max-w-2xl mx-auto p-3 text-center">
         <div>
           <h1 className="text-3xl font font-semibold text-center my-7">
-            About Sourav's Blog
+            About RentEase
           </h1>
           <div className="text-md text-gray-500 flex flex-col gap-6">
             <p>
-              Welcome to Sourav's Blog! This blog was created by Sourav as a
-              personal project to share his thoughts and ideas with the world. I
-              am a passionate developer who loves to write about technology,
-              coding, and everything in between.
-            </p>
-
-            <p>
-              On this blog, you'll find weekly articles and tutorials on topics
-              such as web development, software engineering, and programming
-              languages. Sourav is always learning and exploring new
-              technologies, so be sure to check back often for new content!
-            </p>
-
-            <p>
-              We encourage you to leave comments on our posts and engage with
-              other readers. You can like other people's comments and reply to
-              them as well. We believe that a community of learners can help
-              each other grow and improve.
+              Welcome to RentEase, your one-stop platform for seamless property
+              rentals and sales. Whether you’re looking to rent your dream
+              apartment or sell a property hassle-free, RentEase simplifies the
+              entire process. With an intuitive interface and reliable listings,
+              we connect property owners with potential tenants and buyers,
+              making real estate transactions smooth and efficient. Find your
+              next home or investment with ease—only on RentEase!
             </p>
           </div>
         </div>

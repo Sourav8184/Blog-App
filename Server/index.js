@@ -3,10 +3,13 @@ import "dotenv/config";
 import express from "express";
 import connect_DB from "./db/connect_DB.js";
 import cookieParser from "cookie-parser";
+import path from "path";
 
+const __dirname = path.resolve();
 const app = express();
 
 // Middlewares:
+app.use(express.static(path.join(__dirname, "/client/dist")));
 app.use(cookieParser());
 app.use(express.json());
 
@@ -30,9 +33,11 @@ connect_DB()
 import userRouter from "./routes/userRoute.js";
 import authRouter from "./routes/authRoute.js";
 import postRouter from "./routes/postRoute.js";
-import commentRouter from "./routes/commentRoute.js";
 
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/post", postRouter);
-app.use("/api/comment", commentRouter);
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});

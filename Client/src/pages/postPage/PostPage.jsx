@@ -2,8 +2,6 @@ import React from "react";
 import { Button, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import NewArticles from "../../components/newArticles/NewArticles";
-import CommentSection from "../../components/commentSection/CommentSection";
 import PostCard from "../../components/postCard/PostCard";
 
 function PostPage() {
@@ -62,9 +60,7 @@ function PostPage() {
       <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
         {post && post.title}
       </h1>
-      <Link
-        to={`/search?category=${post && post.category}`}
-        className="self-center mt-5">
+      <Link className="self-center mt-5">
         <Button color="gray" pill size="xs" outline>
           {post && post.category}
         </Button>
@@ -83,10 +79,6 @@ function PostPage() {
       <div
         className="p-3 max-w-2xl mx-auto w-full post-content"
         dangerouslySetInnerHTML={{ __html: post && post.content }}></div>
-      <div className="max-w-4xl mx-auto w-full ">
-        <NewArticles />
-      </div>
-      <CommentSection postId={post._id} />
       <div className="flex flex-col max-w-full justify-center items-center mb-5">
         <h1 className="text-xl mt-5">Recent articles</h1>
         <div className="flex justify-center items-center gap-5 mt-5 flex-wrap">

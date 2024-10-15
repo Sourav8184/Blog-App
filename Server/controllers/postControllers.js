@@ -4,10 +4,6 @@ import ApiResponse from "../utils/ApiResponse.js";
 import postModel from "../models/postModel.js";
 
 export const create = asyncHandler(async (req, res) => {
-  if (!req.user.isAdmin) {
-    throw new ApiError(403, "You are not allowed to create a post");
-  }
-
   if (!req.body.title || !req.body.content) {
     throw new ApiError(400, "Please provide all required fields");
   }
@@ -91,10 +87,6 @@ export const getPost = asyncHandler(async (req, res) => {
 });
 
 export const deletePost = asyncHandler(async (req, res) => {
-  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
-    throw new ApiError(403, "You are not allowed to delete this post");
-  }
-
   try {
     const deletedPost = await postModel.findByIdAndDelete(req.params.postId);
     return res
@@ -112,10 +104,6 @@ export const deletePost = asyncHandler(async (req, res) => {
 });
 
 export const updatePost = asyncHandler(async (req, res) => {
-  if (!req.user.isAdmin || req.user.id !== req.params.userId) {
-    throw new ApiError(403, "You are not allowed to update this post");
-  }
-
   try {
     const updatedPost = await postModel.findByIdAndUpdate(
       req.params.postId,
